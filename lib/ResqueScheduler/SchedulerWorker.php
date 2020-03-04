@@ -17,7 +17,7 @@ use resque\lib\Resque\Resque_Job;
 use resque\lib\MonologInit\MonologInit_MonologInit;
 use resque\lib\Resque\Job\Resque_Job_Status;
 
-class Worker
+class SchedulerWorker
 {
 	const LOG_NONE = 0;
 	const LOG_NORMAL = 1;

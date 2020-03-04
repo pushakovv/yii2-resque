@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 use resque\lib\ResqueAutoloader;
-use resque\lib\ResqueScheduler\Worker;
+use resque\lib\ResqueScheduler\SchedulerWorker;
 
 $includeFiles=getenv('INCLUDE_FILES');
 if ($includeFiles) {
