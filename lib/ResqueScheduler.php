@@ -1,5 +1,7 @@
 <?php
+
 namespace resque\lib\Resque;
+
 use resque\lib\Resque\Resque_Event;
 use resque\lib\Resque;
 use resque\lib\Resque\RedisApi;
