@@ -17,7 +17,7 @@ class Resque_Job
 	public $queue;
 
 	/**
-	 * @var Resque_Worker Instance of the Resque worker running this job.
+	 * @var Worker Instance of the Resque worker running this job.
 	 */
 	public $worker;
 

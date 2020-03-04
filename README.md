@@ -47,7 +47,7 @@ Installation
         use Yii;
         use yii\console\Controller;
         use resque\lib\ResqueAutoloader;
-        use resque\lib\Resque\Resque_Worker;
+        use resque\lib\Resque\Worker;
         /**
          *
          * @author Sprytechies
@@ -112,9 +112,9 @@ Installation
                     $VERBOSE = getenv('VERBOSE');
                     $VVERBOSE = getenv('VVERBOSE');
                     if(!empty($LOGGING) || !empty($VERBOSE)) {
-                        $logLevel = Resque_Worker::LOG_NORMAL;
+                        $logLevel = Worker::LOG_NORMAL;
                     } else if(!empty($VVERBOSE)) {
-                        $logLevel = Resque_Worker::LOG_VERBOSE;
+                        $logLevel = Worker::LOG_VERBOSE;
                     }
 
                     $logger = null;
@@ -177,7 +177,7 @@ Installation
             function startWorker($QUEUE, $logLevel, $logger, $interval)
             {
                 $queues = explode(',', $QUEUE);
-                $worker = new Resque_Worker($queues);
+                $worker = new Worker($queues);
 
                 if (!empty($logger)) {
                     $worker->registerLogger($logger);    

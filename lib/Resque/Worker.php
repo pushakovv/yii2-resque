@@ -16,7 +16,7 @@ use resque\lib\Resque\Resque_Job;
 use resque\lib\MonologInit\MonologInit_MonologInit;
 use resque\lib\Resque\Job\Resque_Job_Status;
 //include(dirname(__FILE__) . '/Resque/Event.php');
-class Resque_Worker
+class Worker
 {
     const LOG_NONE = 0;
     const LOG_NORMAL = 1;
@@ -108,7 +108,7 @@ class Resque_Worker
      * Given a worker ID, find it and return an instantiated worker class for it.
      *
      * @param string $workerId The ID of the worker.
-     * @return Resque_Worker Instance of the worker. False if the worker does not exist.
+     * @return Worker Instance of the worker. False if the worker does not exist.
      */
     public static function find($workerId)
     {
