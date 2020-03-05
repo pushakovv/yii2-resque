@@ -1,12 +1,13 @@
 <?php
 
 namespace resque;
+
 use resque\lib\ResqueAutoloader;
 use resque\lib\Resque;
 use resque\lib\Resque\ResqueScheduler;
-use \yii\BaseYii;
 
-class RResque extends \yii\base\Component
+
+class RResque
 {
     /**
      * @var string Redis server address
@@ -36,33 +37,36 @@ class RResque extends \yii\base\Component
      */
     public $includeFiles = '';
 
+    public function __construct($redis)
+    {
+        $this->init($redis);
+    }
+
     /**
      * Initializes the connection.
      */
-    public function init()
+    public function init($redis)
     {
-        parent::init();
-        
         if(!class_exists('ResqueAutoloader', false)) {
-            
+
             # Turn off our amazing library autoload
             spl_autoload_unregister(['Yii', 'autoload']);
             # Include Autoloader library
             include(dirname(__FILE__) . '/ResqueAutoloader.php');
-             
+
             # Run request autoloader
             ResqueAutoloader::register();
 
             # Give back the power to Yii
             spl_autoload_register(array('Yii','autoload'));
         }
-        Resque::setBackend($this->server . ':' . $this->port, $this->database, $this->password);
+        Resque::setBackend($redis);
         if ($this->prefix) {
-          Resque::redis()->prefix($this->prefix);    
+          Resque::redis()->prefix($this->prefix);
         }
-        
+
     }
-    
+
     /**
      * Create a new job and save it to the specified queue.
      *
@@ -74,7 +78,7 @@ class RResque extends \yii\base\Component
      */
     public function createJob($queue, $class, $args = array(), $track_status = false)
     {
-        
+
         return Resque::enqueue($queue, $class, $args, $track_status);
     }
 
@@ -105,7 +109,7 @@ class RResque extends \yii\base\Component
      */
     public function enqueueJobAt($at, $queue, $class, $args = array())
     {
-        	
+
         return ResqueScheduler::enqueueAt($at, $queue, $class, $args);
     }
 
@@ -155,7 +159,7 @@ class RResque extends \yii\base\Component
     {
         return $this->redis()->zRange('delayed_queue_schedule', 0, -1);
     }
-    
+
 //    public function getValueByKey($key){
 //        return $this->redis()->get($key);
 //    }

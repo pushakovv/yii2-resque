@@ -33,14 +33,14 @@ Installation
     ```
 
     or add
-    
+
     ```
     "resque/yii2-resque": "dev-master"
     ```
 
     to the require section of your `composer.json` file.
 
-2.  Create a file `ResqueController.php` in app/commands folder(in case of yii2-basic) or console/controllers(in case of yii2- 
+2.  Create a file `ResqueController.php` in app/commands folder(in case of yii2-basic) or console/controllers(in case of yii2-
  advance) and write the following code in it.
     ```php
         namespace app\commands;
@@ -80,7 +80,7 @@ Installation
 
                     # Turn off our amazing library autoload
                     spl_autoload_unregister(array('Yii','autoload'));
-                    
+
                     if(file_exists(Yii::getAlias('@vendor') . '/resque/yii2-resque/ResqueAutoloader.php')){
                     // Yii2-Basic
                     require_once(Yii::getAlias('@vendor') . '/resque/yii2-resque/ResqueAutoloader.php');
@@ -104,7 +104,7 @@ Installation
 
                     if(!empty($REDIS_BACKEND)) {
                         $REDIS_BACKEND_DB = (!empty($REDIS_BACKEND_DB)) ? $REDIS_BACKEND_DB : 0;
-                        Resque::setBackend($REDIS_BACKEND, $REDIS_BACKEND_DB, $REDIS_AUTH);
+                        Resque::setBackend(\Yii::$app->redis);
                     }
 
                     $logLevel = 0;
@@ -125,7 +125,7 @@ Installation
                         if (!empty($LOG_HANDLER) && !empty($LOG_HANDLER_TARGET)) {
                             $logger = new MonologInit_MonologInit($LOG_HANDLER, $LOG_HANDLER_TARGET);
                         } else {
-                            fwrite(STDOUT, '*** loghandler or logtarget is not set.'."\n");    
+                            fwrite(STDOUT, '*** loghandler or logtarget is not set.'."\n");
                         }
                     } else {
                         fwrite(STDOUT, '*** MonologInit_MonologInit logger cannot be found, continue without loghandler.'."\n");
@@ -180,7 +180,7 @@ Installation
                 $worker = new Worker($queues);
 
                 if (!empty($logger)) {
-                    $worker->registerLogger($logger);    
+                    $worker->registerLogger($logger);
                 } else {
                     fwrite(STDOUT, '*** Starting worker '.$worker."\n");
                 }
@@ -191,19 +191,19 @@ Installation
         }
 
     ```
-    
+
 3.  Add these in your config/web.php and in your config/console.php(in case of yii2-basic) or console/config/main.php and common/config/main-local.php (in case of yii2- advance)
 
     ```php
     'components' => [
         ...
-        'resque' => [ 
-            'class' => '\resque\RResque', 
+        'resque' => [
+            'class' => '\resque\RResque',
             'server' => 'localhost',     // Redis server address
             'port' => '6379',            // Redis server port
             'database' => 0,             // Redis database number
             'password' => '',            // Redis password auth, set to '' or null when no auth needed
-        ], 
+        ],
         ...
     ]
     ```
@@ -215,10 +215,10 @@ Usage
 
 Once the extension is installed  :
 
-1.  Create a folder `components` in your app(yii2-basic).in case of yii2-advance template create this folder inside app(like frontend) 
+1.  Create a folder `components` in your app(yii2-basic).in case of yii2-advance template create this folder inside app(like frontend)
     You can put all your class files into this `components` folder.Change namespace as per your application.
 
-    Example - 
+    Example -
 
     ```php
     namespace app\components;
@@ -243,7 +243,7 @@ Once the extension is installed  :
     }
     ```
 
- 
+
    Create job and Workers
     ----------------------
 
@@ -264,7 +264,7 @@ Once the extension is installed  :
     or run job after n second
     ```php
         $in = 3600;
-        $args = ['id' => $user->id];    
+        $args = ['id' => $user->id];
         Yii::$app->resque->enqueueIn($in, 'email', 'ClassWorker', $args);
     ```
     Get Current Queues

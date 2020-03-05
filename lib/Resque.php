@@ -47,12 +47,9 @@ class Resque
      *                      a nested array of servers with host/port pairs.
      * @param int $database
      */
-    public static function setBackend($server, $database = 0, $password = '')
+    public static function setBackend($redis)
     {
-        self::$redisServer   = $server;
-        self::$redisDatabase = $database;
-        self::$redisPassword = $password;
-        self::$redis         = null;
+        self::$redis = $redis;
     }
 
     /**
@@ -70,11 +67,11 @@ class Resque
         if (empty($server)) {
             $server = 'localhost:6379';
         }
-        
-        
-        
+
+
+
         self::$redis = new Resque_Redis($server, self::$redisDatabase, self::$redisPassword);
-        
+
         # Select Database
         self::$redis->select(self::$redisDatabase);
         //echo "<pre>";print_r(self::$redis);
@@ -117,7 +114,7 @@ class Resque
      */
     public static function push($queue, $item)
     {
-        
+
         self::redis()->sadd('queues', $queue);
         self::redis()->rpush('queue:' . $queue, json_encode($item));
 //        self::redis()->get('queue:mohit');
@@ -164,12 +161,12 @@ class Resque
      */
     public static function enqueue($queue, $class, $args = null, $trackStatus = false)
     {
-        
-        
+
+
         $result = Resque_Job::create($queue, $class, $args, $trackStatus);
-        	
+
         if ($result) {
-            
+
             Resque_Event::trigger('afterEnqueue', array(
                 'class' => $class,
                 'args'  => $args,

@@ -35,7 +35,7 @@ $REDIS_AUTH = getenv('REDIS_AUTH');
 
 if(!empty($REDIS_BACKEND)) {
     $REDIS_BACKEND_DB = (!empty($REDIS_BACKEND_DB)) ? $REDIS_BACKEND_DB : 0;
-    Resque::setBackend($REDIS_BACKEND, $REDIS_BACKEND_DB, $REDIS_AUTH);
+    Resque::setBackend(\Yii::$app->redis);
 }
 
 // Set log level for resque-scheduler
@@ -57,7 +57,7 @@ if (class_exists('MonologInit_MonologInit')) {
     if (!empty($LOG_HANDLER) && !empty($LOG_HANDLER_TARGET)) {
         $logger = new MonologInit_MonologInit($LOG_HANDLER, $LOG_HANDLER_TARGET);
     } else {
-        fwrite(STDOUT, '*** loghandler or logtarget is not set.'."\n");    
+        fwrite(STDOUT, '*** loghandler or logtarget is not set.'."\n");
     }
 } else {
     fwrite(STDOUT, '*** MonologInit_MonologInit logger cannot be found, continue without loghandler.'."\n");
@@ -78,7 +78,7 @@ if(!empty($PREFIX)) {
 
 $worker = new Worker();
 if (!empty($logger)) {
-    $worker->registerLogger($logger);    
+    $worker->registerLogger($logger);
 } else {
     fwrite(STDOUT, "*** Starting scheduler worker\n");
 }
