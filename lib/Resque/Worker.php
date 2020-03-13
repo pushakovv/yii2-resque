@@ -409,7 +409,7 @@ class Worker
     public function reestablishRedisConnection()
     {
         $this->log(array('message' => 'SIGPIPE received; attempting to reconnect', 'data' => array('type' => 'reconnect')), self::LOG_TYPE_INFO);
-        Resque::redis()->establishConnection();
+        Resque::setBackend(Resque::redis()->getConnection());
     }
 
     /**
