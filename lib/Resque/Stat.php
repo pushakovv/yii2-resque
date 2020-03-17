@@ -30,7 +30,7 @@ class Resque_Stat
 	 */
 	public static function incr($stat, $by = 1)
 	{
-		return (bool)Resque::redis()->incr('stat:' . $stat);
+		return (bool)Resque::redis()->incrby('stat:' . $stat, $by);
 	}
 
 	/**
@@ -42,7 +42,7 @@ class Resque_Stat
 	 */
 	public static function decr($stat, $by = 1)
 	{
-		return (bool)Resque::redis()->decr('stat:' . $stat);
+		return (bool)Resque::redis()->decrby('stat:' . $stat, $by);
 	}
 
 	/**
