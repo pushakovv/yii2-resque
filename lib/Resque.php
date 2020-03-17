@@ -40,19 +40,11 @@ class Resque
     protected static $redisPassword = '';
 
     /**
-     * Given a host/port combination separated by a colon, set it as
-     * the redis server that Resque will talk to.
-     *
-     * @param mixed $server Host/port combination separated by a colon, or
-     *                      a nested array of servers with host/port pairs.
-     * @param int $database
+     * @param $redis
      */
-    public static function setBackend($server, $database = 0, $password = '')
+    public static function setBackend($redis)
     {
-        self::$redisServer   = $server;
-        self::$redisDatabase = $database;
-        self::$redisPassword = $password;
-        self::$redis         = null;
+        self::$redis = $redis;
     }
 
     /**
