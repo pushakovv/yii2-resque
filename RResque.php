@@ -47,6 +47,10 @@ class RResque
      */
     public function init($redis)
     {
+        if (Resque::$redis) {
+            return true;
+        }
+
         if(!class_exists('ResqueAutoloader', false)) {
 
             # Turn off our amazing library autoload
